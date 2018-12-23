@@ -1,11 +1,23 @@
 {
-  "name": "my-simple-retailshop",
-  "version": "0.1.0",
+  "name": "myRetailShop",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0",
-    "react-scripts": "2.1.1"
+    "moment": "^2.22.2",
+    "react": "^16.5.2",
+    "react-alert": "^4.0.4",
+    "react-alert-template-basic": "^1.0.0",
+    "react-awesome": "^0.0.2",
+    "react-bootstrap": "^0.32.4",
+    "react-dom": "^16.5.2",
+    "react-fontawesome": "^1.6.1",
+    "react-redux": "^5.0.7",
+    "react-scripts": "2.0.5",
+    "reactstrap": "^6.5.0",
+    "redis": "^2.8.0",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0",
+    "underscore": "^1.9.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -21,5 +33,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "nodemon": "^1.18.4"
+  }
 }
