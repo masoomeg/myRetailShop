@@ -76,10 +76,10 @@ public class ProductsRepositoryImp {
                  productsRepository.deleteAll();
             }
 
-    public  void saveProduct(Product product) {
+    public  Product saveProduct(Product product) {
 
         product.setId(redisAtomicLong.getRedisAtomicLong().incrementAndGet());
-                     productsRepository.save(product);
+                 return    productsRepository.save(product);
                 }
 
 

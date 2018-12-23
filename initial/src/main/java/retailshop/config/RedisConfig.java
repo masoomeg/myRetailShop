@@ -9,6 +9,14 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericToStringSerializer;
 import org.springframework.data.redis.support.atomic.RedisAtomicLong;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Created by Ma_Gorji on 2018/12/22.
@@ -54,5 +62,23 @@ public class RedisConfig {
    		template.setValueSerializer(new GenericToStringSerializer<Object>(Object.class));
    		return template;
    	}
+
+//	@Component
+//	public class CorsFilter extends OncePerRequestFilter {
+//
+//		@Override
+//		protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+//			response.setHeader("Access-Control-Allow-Origin", "*");
+//			response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+//			response.setHeader("Access-Control-Max-Age", "3600");
+//			response.setHeader("Access-Control-Allow-Headers", "authorization, content-type, xsrf-token");
+//			response.addHeader("Access-Control-Expose-Headers", "xsrf-token");
+//			if ("OPTIONS".equals(request.getMethod())) {
+//				response.setStatus(HttpServletResponse.SC_OK);
+//			} else {
+//				filterChain.doFilter(request, response);
+//			}
+//		}
+//	}
 
 }

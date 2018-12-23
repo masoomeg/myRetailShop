@@ -1,6 +1,7 @@
 package retailshop.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import retailshop.entity.Product;
 import retailshop.repository.ProductsRepository;
@@ -18,6 +19,7 @@ public class ProductController {
     ProductsRepositoryImp productsRepositoryImp;
 
     @RequestMapping(method = RequestMethod.GET, value = "/products")
+    @CrossOrigin(origins = "http://localhost:8080")
     public List<Product> getProducts() {
 
         return productsRepositoryImp.getAllProducts();
@@ -31,10 +33,16 @@ public class ProductController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/products/{id}")
-    public void deleteProduct(@PathVariable String id) {
+    public ResponseEntity<?> deleteProduct(@PathVariable String id) {
 
 
-        productsRepositoryImp.delProductById(id);
+        try {
+            productsRepositoryImp.delProductById(id);
+        }catch (Exception e ){
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok().build();
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/products")
@@ -43,10 +51,10 @@ public class ProductController {
         productsRepositoryImp.delAllProduct();
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/products")
-       public void saveProduct(@RequestBody Product product) {
+    @RequestMapping(method = RequestMethod.POST, value = "/products" ,produces = {"application/json"})
+       public Product saveProduct(@RequestBody Product product) {
 
-           productsRepositoryImp.saveProduct(product);
+           return productsRepositoryImp.saveProduct(product);
        }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/products/{id}")
