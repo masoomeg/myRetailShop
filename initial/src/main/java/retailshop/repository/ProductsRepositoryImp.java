@@ -83,13 +83,13 @@ public class ProductsRepositoryImp {
                 }
 
 
-    public  void updateProduct(Product product,String id) {
+    public  Product updateProduct(Product product,String id) {
 
         Product p=productsRepository.findById(id).get();
         p.setName(product.getName());
         p.setAmount(product.getAmount());
         p.setDescription(product.getDescription());
-                         productsRepository.save(p);
+                        return productsRepository.save(p);
                     }
 
 

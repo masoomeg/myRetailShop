@@ -50,9 +50,9 @@ public class ProductController {
        }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/products/{id}")
-           public void updateProduct(@PathVariable String id,@RequestBody Product product) {
+           public Product updateProduct(@PathVariable String id,@RequestBody Product product) {
 
-               productsRepositoryImp.updateProduct(product,id);
+            return    productsRepositoryImp.updateProduct(product,id);
            }
 
 
