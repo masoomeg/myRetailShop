@@ -12,6 +12,11 @@ export const receiveGetProduct = (data) =>( {
     data: data,
 } );
 
+
+export const clearProduct = () =>( {
+    type: 'clearProduct',
+} );
+
 export const receiveDeleteProduct = (data) =>( {
     type: 'deleteProduct',
     data: data,
@@ -27,8 +32,13 @@ export const receiveCreateProduct = (data) =>( {
     data: data,
 } );
 
+export const receiveSearchProduct = (data) =>( {
+    type: 'searchProduct',
+    data: data,
+} );
+
 export const getProducts = failure => dispatch => {
-    fetch(`${url}/products`)
+    fetch(`${url}/api/products`)
         .then(resp => {
             console.log('get prodcts');
             return resp.json()
@@ -48,8 +58,32 @@ export const getProducts = failure => dispatch => {
             if (failure) failure(err.message);
         });
 };
+
+
+
+export const searchProduct = (searchStr)=> dispatch => {
+    console.log('search products');
+    fetch(`${url}/api/products?name=${searchStr}`)
+        .then(resp => {
+            console.log('search products');
+            return resp.json()
+        })
+        .then(resp => {
+
+            if (resp.error) {
+            } else {
+                console.log(resp);
+
+                dispatch(receiveSearchProduct(resp));
+            }
+        })
+        .catch(err => {
+            console.log(err.message);
+        });
+};
+
 export const getProduct = (product, failure) => dispatch => {
-    fetch(`${url}/products/${product.id}`)
+    fetch(`${url}/api/products/${product.id}`)
         .then(resp => resp.json())
         .then(resp => {
             if (resp.error) {
@@ -64,7 +98,7 @@ export const getProduct = (product, failure) => dispatch => {
         });
 };
 export const deleteProduct = (product, success, failure) => dispatch => {
-    fetch(`${url}/products/${product.id}`, {
+    fetch(`${url}/api/products/${product.id}`, {
         method: "DELETE"
     })
         .then(resp => {
@@ -72,6 +106,7 @@ export const deleteProduct = (product, success, failure) => dispatch => {
                 failure(resp.message);
             } else {
                 dispatch(receiveDeleteProduct(product));
+                if (success) success();
             }
         })
         .catch(err => {
@@ -82,7 +117,7 @@ export const deleteProduct = (product, success, failure) => dispatch => {
 
 export const createProduct = (product, success, failure) => dispatch => {
     console.log("create", product);
-    fetch(`${url}/products`, {
+    fetch(`${url}/api/products`, {
         method: "POST",
         headers: {"content-type": "application/json", 'Accept': 'application/json'},
         body: JSON.stringify(product)
@@ -106,7 +141,7 @@ export const createProduct = (product, success, failure) => dispatch => {
 
 export const updateProduct = (product, success, failure) => dispatch => {
     console.log("update", product);
-    fetch(`${url}/products/${product.id}`, {
+    fetch(`${url}/api/products/${product.id}`, {
         method: "PUT",
         headers: {"content-type": "application/json"},
         body: JSON.stringify(product)

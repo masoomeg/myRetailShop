@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Button, Modal, ModalHeader,ModalBody } from "react-bootstrap";
+import { Button, Modal, ModalHeader,ModalBody ,Tooltip,OverlayTrigger} from "react-bootstrap";
 import { connect } from "react-redux";
-import { createProduct, updateProduct } from "../actions/productActions";
+import { createProduct, updateProduct , clearProduct} from "../actions/productActions";
 import moment from "moment";
 
 class CreateEditProduct extends Component {
@@ -10,13 +10,13 @@ class CreateEditProduct extends Component {
         this.onChange = this.onChange.bind(this);
         this.onSave = this.onSave.bind(this);
         this.onReset = this.onReset.bind(this);
+        this.onResetParam = this.onResetParam.bind(this);
         this.onFailure = this.onFailure.bind(this);
         this.onSuccess = this.onSuccess.bind(this);
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
 
         if (this.props.product.id) {
-            //this.setState({showModal:true});
             this.state = {
                 showModal: true,
             }
@@ -27,14 +27,42 @@ class CreateEditProduct extends Component {
             modalMsgHeader: '',
             name: "",
             description: "",
-            type: "",
+            category: "",
             amount: 0,
+            valid:true,
+            errors:{}
 
         };
     }
 
-    handleClose() {
-        this.setState({showModal: false});
+
+    handleValidation = ()=> {
+        let errors = {}
+        let valid = true;
+        const re = /^[0-9\b]+$/;
+        if (!this.state.name) {
+            errors["name"] = " can not be empty!";
+            this.setState({errors: errors, valid: false});
+            valid = false;
+        }
+        if (!re.test(this.state.amount)) {
+            errors["Amount"] = " must be numberic!";
+            this.setState({errors: errors, valid: false});
+            valid = false;
+        }
+        return valid;
+    }
+    async handleClose() {
+
+        await this.props.clearProduct();
+        this.setState({
+            showModal: false,
+            modalMsg: '',
+            modalMsgHeader: '',
+            valid :true,
+            errors:{}
+        });
+
     }
 
     handleShow() {
@@ -51,6 +79,18 @@ class CreateEditProduct extends Component {
         }
     }
 
+    componentDidUpdate(prevProps) {
+
+        if (prevProps.product.id!= this.props.product.id ) {
+
+            if (this.props.product.id) {
+                this.setState({showModal: true});
+            }else {
+                this.onResetParam();
+            }
+        }
+        }
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.product && nextProps.product.id) {
             this.setState(nextProps.product);
@@ -63,26 +103,42 @@ class CreateEditProduct extends Component {
     onReset(e) {
         if (e) e.preventDefault();
         this.setState({
-            showModal: false,
             modalMsg: '',
             modalMsgHeader: '',
             name: "",
             description: "",
-            type: "",
+            category: "",
             amount: 0,
             id: "",
-            date: moment().format("YYYY/MM/DD hh:mm:ss")
+            valid :true,
+             errors:{}
         });
     }
 
+    onResetParam(e) {
+           if (e) e.preventDefault();
+           this.setState({
+               name: "",
+               description: "",
+               category: "",
+               amount: 0,
+               id: "",
+               valid :true,
+                errors:{}
+           });
+       }
+
     onSave(e) {
         e.preventDefault();
+        this.setState({errors:{},valid:true});
+       if ( !this.handleValidation()){
+           return;
+       }
         const product = {
             name: this.state.name,
             description: this.state.description,
-            type: this.state.type ? this.state.type : "veg",
+            category: this.state.category ? this.state.category : "Pet",
             amount: this.state.amount,
-            date: moment().format("YYYY/MM/DD hh:mm:ss")
         };
         if (this.state.id) {
             product["id"] = this.state.id;
@@ -106,6 +162,8 @@ class CreateEditProduct extends Component {
             modalMsg: 'your changes was affected successfully',
             modalMsgHeader: 'Congratulations!'
         });
+        this.onResetParam();
+        this.props.clearProduct();
     }
 
     onFailure(msg) {
@@ -113,12 +171,24 @@ class CreateEditProduct extends Component {
     }
 
     render() {
+        const categories = [{value: "Electronic", label: "Electronic"},
+            {value: "Health", label: "Health And Beauty"},
+            {value: "Pet", label: "Pet"},
+            {value: "Home", label: "Home And Furniture"},
+            {value: "logo", label: "other"}];
 
+        const tooltip = (
+            <Tooltip id="tooltip">
+                <strong>Click to add new Product!</strong>
+            </Tooltip>
+        );
         return (
 
             <div className="createProduct">
-                <i onClick={this.handleShow} className="fa fa-plus-circle"
-                   style={{ fontSize: '37px' , color:'#79e079'}}/>
+                <OverlayTrigger placement="left" overlay={tooltip}>
+                    <i onClick={this.handleShow} className="fa fa-plus-circle"
+                       style={{ fontSize: '37px' , color:'#79e079'}}/>
+                </OverlayTrigger>
                 <div className="panel panel-default  ">
 
 
@@ -147,6 +217,8 @@ class CreateEditProduct extends Component {
                                         <label htmlFor="amount">Amount</label>
                                         <input
                                             type="text"
+                                            pattern="[0-9]*"
+                                            inputMode="numeric"
                                             className="form-control"
                                             id="amount"
                                             value={this.state.amount}
@@ -173,22 +245,21 @@ class CreateEditProduct extends Component {
                                     <div className="form-group col-md-6">
                                         <label htmlFor="type">Category</label>
                                         <select
-                                            defaultValue={this.state.type}
+                                            defaultValue={this.state.category}
                                             onChange={this.onChange}
-                                            id="type"
-                                            name="type"
+                                            id="category"
+                                            name="category"
                                             className="form-control"
                                         >
                                             <option>Choose...</option>
-                                            {["Electronic", "Health And Beauty", "Pet", "Home And Furniture", "other"].map(
-                                                type => {
+                                            {categories.map(
+                                                category => {
                                                     return (
                                                         <option
-                                                            key={type}
-                                                            value={type}
-                                                            selected={this.state.type === type}
+                                                            key={category.value}
+                                                            value={category.value}
                                                         >
-                                                            {type}
+                                                            {category.label}
                                                         </option>
                                                     );
                                                 }
@@ -199,7 +270,7 @@ class CreateEditProduct extends Component {
 
                                         <Button style={{margin:"5px"}}
                                                 onClick={this.onSave}
-                                                className="btn btn-success col-md-1"
+                                                className="btn btn-success col-md-2"
                                         >
                                             Save
                                         </Button>
@@ -207,10 +278,11 @@ class CreateEditProduct extends Component {
 
                                         <Button style={{margin:"5px"}}
                                                 onClick={this.onReset}
-                                                className="btn btn-danger col-md-1"
+                                                className="btn btn-danger col-md-2"
                                         >
                                             Reset
                                         </Button>
+                                        {!this.state.valid &&  <div>{ Object.keys(this.state.errors).map((val, k) => <h4 style={{color:"red"}} k={k}>{val}{ this.state.errors[val]}</h4>)}</div>}
                                     </div>
                                 </div>
                             </form>
@@ -230,5 +302,5 @@ const mapStateToProps = state => ({
 });
 export default connect(
     mapStateToProps,
-    {createProduct, updateProduct}
+    {createProduct, updateProduct, clearProduct}
 )(CreateEditProduct);

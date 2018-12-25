@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true">
+<!-- 	<include resource="org/springframework/boot/logging/logback/base.xml" /> -->
+
+	<include resource="org/springframework/boot/logging/logback/defaults.xml" />
+
+	<!-- The FILE and ASYNC appenders are here as examples for a production
+		configuration -->
+
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<encoder>
+			<pattern>%X{username} ${CONSOLE_LOG_PATTERN}
+			</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>DEBUG</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>../logs/um-logFile.%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+			<maxHistory>90</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<charset>utf-8</charset>
+			<Pattern>%d %-5level [%thread] %logger{0}: %X{username} %msg%n</Pattern>
+		</encoder>
+	</appender>
+
+	<appender name="SQLFILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>TRACE</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>../logs/sql-trace.%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+			<maxHistory>90</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<charset>utf-8</charset>
+			<Pattern>%d %-5level [%thread] %logger{0}: %msg%n</Pattern>
+		</encoder>
+	</appender>
+
+
+	<logger name="com.ryantenney" level="WARN" />
+	<logger name="com.sun" level="WARN" />
+	<logger name="com.zaxxer" level="WARN" />
+	<logger name="io.undertow" level="WARN" />
+	<logger name="io.undertow.websockets.jsr" level="ERROR" />
+	<logger name="org.apache" level="WARN" />
+	<logger name="org.apache.catalina.startup.DigesterFactory"
+		level="OFF" />
+	<logger name="org.bson" level="WARN" />
+	<logger name="org.elasticsearch" level="WARN" />
+	<logger name="org.springframework" level="WARN" />
+	<logger name="org.springframework.web" level="WARN" />
+	<logger name="org.springframework.security" level="WARN" />
+	<logger name="org.springframework.cache" level="WARN" />
+	<logger name="org.thymeleaf" level="WARN" />
+	<logger name="org.xnio" level="WARN" />
+	<logger name="springfox" level="WARN" />
+
+	<logger name="com.hazelcast.internal.partition.InternalPartitionService"
+		level="WARN" />
+	<logger name="com.hazelcast" level="WARN" />
+	<logger name="com.microsoft" level="WARN" />
+
+
+	<!-- Hibernate configuration -->
+
+	<!--
+	<logger name="org.hibernate" level="WARN" />
+	<logger name="org.hibernate.validator" level="WARN" />
+	<logger name="org.hibernate.type" level="ALL" />
+	<logger name="org.hibernate.ejb.HibernatePersistence" level="OFF" />
+	<logger name="org.hibernate.type.BasicTypeRegistry" level="WARN" />
+	<logger name="org.hibernate.type.descriptor.sql.BasicExtractor" level="WARN" />
+	<logger name="org.hibernate.type.CollectionType" level="WARN" />
+	-->
+
+	<logger name="org.hibernate" level="WARN"><appender-ref ref="SQLFILE"/></logger>
+	<logger name="org.hibernate.SQL" level="WARN"><appender-ref ref="SQLFILE"/></logger>
+	<logger name="org.hibernate.type" level="WARN"><appender-ref ref="SQLFILE"/></logger>
+	<logger name="org.hibernate.hql.ast.AST" level="WARN"><appender-ref ref="SQLFILE"/></logger>
+	<logger name="org.hibernate.hql.internal.ast" level="WARN"><appender-ref ref="SQLFILE"/></logger>
+	<logger name="org.hibernate.tool.hbm2ddl" level="WARN"><appender-ref ref="SQLFILE"/></logger>
+	<logger name="org.hibernate.hql" level="WARN"><appender-ref ref="SQLFILE"/></logger>
+	<logger name="org.hibernate.cache" level="WARN"><appender-ref ref="SQLFILE"/></logger>
+	<logger name="org.hibernate.jdbc" level="WARN"><appender-ref ref="SQLFILE"/></logger>
+
+
+	<!-- Logging local and JTA transactions -->
+	<logger name="org.hibernate.engine.transaction.internal.jdbc.JdbcTransaction" level="WARN"><appender-ref ref="SQLFILE"/></logger>
+	<logger name="org.hibernate.engine.transaction.internal.jta.JtaTransaction" level="WARN"><appender-ref ref="SQLFILE"/></logger>
+	<logger name="org.springframework.orm.jpa" level="WARN"><appender-ref ref="SQLFILE"/></logger>
+	<logger name="org.springframework.transaction" level="WARN"><appender-ref ref="SQLFILE"/></logger>
+
+	<contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+		<resetJUL>true</resetJUL>
+	</contextListener>
+
+	<root level="DEBUG">
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE" />
+	</root>
+
+</configuration>
