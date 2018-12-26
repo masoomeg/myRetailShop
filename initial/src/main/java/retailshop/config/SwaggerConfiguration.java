@@ -25,33 +25,22 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerConfiguration {
 
 	@Bean
-	public Docket swaggerSpringMvcPlugin() {
+		public Docket swaggerSpringMvcPlugin() {
 
-
-		/*
-		 * Sample: https://springfox.github.io/springfox/docs/current/#configuring-security-schemes-and-contexts-an-overview
-		 */
-		return new Docket(DocumentationType.SWAGGER_2)
-				.groupName("administration-api")
-				.select()
-				//Ignores controllers annotated with @CustomIgnore
-				//                .apis(RequestHandlerSelectors.any()) //Selection by RequestHandler
-				.apis(not(withClassAnnotation(ApiIgnore.class)))
-                .paths(PathSelectors.ant("/api/**"))
-				//.paths(PathSelectors.any()) // and by paths
-				//                .paths(regex("/api/*"))
-				.build()
-				.apiInfo(apiInfo())
-				//.securitySchemes(Arrays.asList(apiKey()))
-				//.securityContexts(Arrays.asList(securityContext()))
+			return new Docket(DocumentationType.SWAGGER_2)
+					.groupName("administration-api")
+					.select()
+					.apis(not(withClassAnnotation(ApiIgnore.class)))
+					.paths(PathSelectors.ant("/api/**"))
+					.build()
+					.apiInfo(apiInfo())
 				;
-
 	}
 
 	//http://localhost:7080/swagger-ui.html
 	private ApiInfo apiInfo() {
-		ApiInfo apiInfo = new ApiInfo("AMX Administration API", "Administration API for AMX.", 
-				"API TOS", "Terms of service", 
+		ApiInfo apiInfo = new ApiInfo("MyRetailShop Administration API", "REST API for Product's crud oprations",
+				"API", "Terms of service",
 				"",
 				"License of API", "API license URL");
 		return apiInfo;
