@@ -12,10 +12,7 @@ class App extends Component {
         <Provider store={store}>
           <div  >
             <NavbarComponent total={store.total} error={store.error} />
-            {/* <TabComponent> */}
             <CreateProduct />
-            {/* <SearchProduct /> */}
-            {/* </TabComponent> */}
             <Products products={store.products} />
           </div>
         </Provider>

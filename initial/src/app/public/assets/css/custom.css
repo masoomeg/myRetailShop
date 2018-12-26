@@ -42,3 +42,17 @@ th{
     margin-top: -10px;
     border: 0 !important;
 }
+a{
+    cursor: pointer;
+}
+
+/*a.hover {*/
+    /*color: red;*/
+    /*text-decoration: none;*/
+    /*cursor: pointer;*/
+/*}*/
+
+/*a.hover:hover {*/
+    /*text-decoration: underline;*/
+    /*cursor: pointer;*/
+/*}*/

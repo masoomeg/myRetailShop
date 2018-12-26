@@ -2,12 +2,25 @@ import React, { Component } from "react";
 import { Navbar, Nav, NavItem , FormGroup , Button , FormControl ,Tooltip,OverlayTrigger} from "react-bootstrap";
 //import logo from "../../assets/logo.png";
 import { connect } from "react-redux";
+import { searchProduct, getProducts} from "../actions/productActions";
 class NavbarComponent extends Component {
-    componentWillMount() {
-        console.log("navbar props", this.props.products);
-        console.log("navbar state", this.state);
-    }
+    constructor(props) {
+        super(props);
+        this.onFailure = this.onFailure.bind(this)
 
+    }
+    state={searchStr:''}
+    onSearch(e) {
+        e.preventDefault();
+       this.props.searchProduct(this.state.searchStr)
+    }
+    onFailure(msg) {
+
+       }
+    clearSearch = () =>{
+        this.setState({searchStr : ''});
+        this.props.getProducts(this.onFailure);
+    }
     render() {
         const tooltip = (
             <Tooltip id="tooltip">
@@ -32,12 +45,15 @@ class NavbarComponent extends Component {
                 <Navbar.Collapse>
                     <Navbar.Form pullRight>
                         <FormGroup>
-                            <OverlayTrigger placement="left" overlay={tooltip}>
-                                <FormControl type="text" placeholder="Search"/>
-                            </OverlayTrigger>
+                            {this.state.searchStr && <a onClick={this.clearSearch}  >Clear Search! </a>}
+                                <FormControl
+                                    value={this.state.searchStr}
+                                    onChange = {(param)=> {console.log ('search for .. ',param.target.value);this.setState({searchStr:param.target.value})}}
+                                    type="text" placeholder="Search"/>
                         </FormGroup>
-
-                        <Button style={{margin:"5px"}} type="submit" className="btn-info">Submit</Button>
+                    <OverlayTrigger placement="right" overlay={tooltip}>
+                        <Button  onClick={this.onSearch.bind(this)} style={{margin:"5px"}} type="submit" className="btn-info">Submit</Button>
+                    </OverlayTrigger>
                     </Navbar.Form>
                 </Navbar.Collapse>
             </Navbar>
@@ -45,11 +61,10 @@ class NavbarComponent extends Component {
     }
 }
 
-//export default NavbarComponent;
 const mapStateToProps = state => ({
-    total: state.reducer.total
+    products: state.reducer.products
 });
 export default connect(
     mapStateToProps,
-    {}
+    {searchProduct ,getProducts}
 )(NavbarComponent);

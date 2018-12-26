@@ -1,0 +1,10 @@
+۲۰۱۸-۱۲-۲۵ ۱۶:۰۸:۳۴,۹۱۴ INFO  [main] Application:  Starting Application v1.0.0 on Ma-Gorji-7 with PID 14368 (D:\myRetailShop-spring\laptop\newww\gs-rest-service\initial\target\myRetailShop-1.0.0.war started by Ma_Gorji in D:\myRetailShop-spring\laptop\newww\gs-rest-service\initial\target)
+۲۰۱۸-۱۲-۲۵ ۱۶:۰۸:۳۴,۹۱۹ DEBUG [main] Application:  Running with Spring Boot v1.5.4.RELEASE, Spring v4.3.9.RELEASE
+۲۰۱۸-۱۲-۲۵ ۱۶:۰۸:۳۴,۹۱۹ INFO  [main] Application:  The following profiles are active: swagger,dev
+۲۰۱۸-۱۲-۲۵ ۱۶:۰۸:۳۵,۱۷۷ DEBUG [background-preinit] logging:  Logging Provider: org.jboss.logging.Slf4jLoggerProvider found via system property
+۲۰۱۸-۱۲-۲۵ ۱۶:۰۸:۴۰,۳۵۰ DEBUG [main] WebConfigurer:  Registering CORS filter
+۲۰۱۸-۱۲-۲۵ ۱۶:۰۸:۴۰,۴۸۹ INFO  [main] WebConfigurer:  Web application configuration, using profiles: swagger
+۲۰۱۸-۱۲-۲۵ ۱۶:۰۸:۴۰,۴۸۹ DEBUG [main] WebConfigurer:  Initialize H2 console
+۲۰۱۸-۱۲-۲۵ ۱۶:۰۸:۴۰,۴۹۵ INFO  [main] WebConfigurer:  Web application fully configured
+۲۰۱۸-۱۲-۲۵ ۱۶:۰۸:۴۶,۹۴۷ WARN  [main] AbstractTemplateResolverConfiguration:  Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
+۲۰۱۸-۱۲-۲۵ ۱۶:۰۸:۴۷,۷۵۰ INFO  [main] Application:  Started Application in 13.987 seconds (JVM running for 14.871)
